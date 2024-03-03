@@ -62,7 +62,7 @@ class AuthController extends Controller
        try{
 
                      
-            return $user = $this->createUser($request);
+        $user = $this->createUser($request);
             if($user){
                 // Auth::login($user);
                 PaystackHelpers::userLocation('Registeration');
@@ -95,8 +95,10 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'source' => $request->source,
             'password' => Hash::make($request->password),
-
         ]);
+
+        $user->assignRole('regular');
+        
         $user->referral_code = Str::random(7);
         // $user->base_currency = $location == "Nigeria" ? 'Naira' : 'Dollar';
         $user->save();
@@ -133,9 +135,15 @@ class AuthController extends Controller
             'email' => 'required|email|max:255',
             'password' => 'required',
         ]);
+
         // $location = PaystackHelpers::getLocation(); //get user location dynamically
         $user = User::where('email', $request->email)->first();
-       
+        $role = $user->getRoleNames();
+        if($role == []){
+            $user->assignRole('regular');
+           // 
+        }
+
         if($user){
             if($user->referral_code == null){
                 $user->referral_code = Str::random(7);
@@ -143,14 +151,13 @@ class AuthController extends Controller
              }
 
              if(Hash::check($request->password, $user->password)){
-
+                $data['user'] = User::with(['roles'])->where('email', $request->email)->first();
                 $data['token'] = $user->createToken('freebyz')->accessToken;
-                $data['user'] = $user;
+               
                 setProfile($user);//set profile page 
                
                 //set base currency if not set
                PaystackHelpers::userLocation('Login');
-               // SystemActivities::loginPoints($user);
               
                 SystemActivities::activityLog($user, 'login', $user->name .' Logged In', 'regular');
                 return response()->json(['status' => true, 'data' => $data,  'message' => 'Login  successful'], 200);
