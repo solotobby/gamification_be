@@ -31,13 +31,8 @@ class AuthController extends Controller
     public function register(Request $request){
         $curLocation = currentLocation();
        if($curLocation == 'Nigeria'){
-        //  $request->validate([
-        //     'username' => 'required|unique:users|max:255',
-        //     'email' => 'required|email|unique:users',
-        //     'phone' => 'required|string|size:13|unique:users',
-        //     'password' => 'required|between:4,32|confirmed',
-        // ]);
-        $validated = $request->validate([
+       
+        $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
@@ -47,7 +42,7 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
        }else{
-       $validated = $request->validate([
+        $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
