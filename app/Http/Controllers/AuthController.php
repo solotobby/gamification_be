@@ -149,10 +149,10 @@ class AuthController extends Controller
                 $data['user'] = User::with(['roles'])->where('email', $request->email)->first();
                 $data['token'] = $user->createToken('freebyz')->accessToken;
                
-                setProfile($user);//set profile page 
+                // setProfile($user);//set profile page 
                
                 //set base currency if not set
-               PaystackHelpers::userLocation('Login');
+            //    PaystackHelpers::userLocation('Login');
               
                 SystemActivities::activityLog($user, 'login', $user->name .' Logged In', 'regular');
                 return response()->json(['status' => true, 'data' => $data,  'message' => 'Login  successful'], 200);

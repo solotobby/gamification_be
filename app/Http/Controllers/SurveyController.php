@@ -7,23 +7,31 @@ use App\Models\ActivityLog;
 use App\Models\LoginPoints;
 use App\Models\Preference;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SurveyController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     public function survey(){
-        $user = Auth::user();
-        if($user->interests()->count() > 0){
-            return back();
+        try{
+            $user = Auth::user();
+            if($user->interests()->count() > 0){
+                return back();
+            }
+            $interests = Preference::orderBy('name', 'ASC')->get();
+        }catch(Exception $exception){
+            return response()->json(['status' => false,  'error'=>$exception->getMessage(), 'message' => 'Error processing request'], 500);
         }
-        $interests = Preference::orderBy('name', 'ASC')->get();
-        return view('user.survey.index', ['interests' => $interests]);
+
+        return response()->json(['status' => true, 'data' => $interests,  'message' => 'List of interests'], 200);
+
+        //return view('user.survey.index', ['interests' => $interests]);
     }
 
 
