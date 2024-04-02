@@ -34,7 +34,8 @@ class User extends Authenticatable
         'country',
         'age_range',
         'gender',
-        'base_currency'
+        'base_currency',
+        'country'
     ];
 
     /**
