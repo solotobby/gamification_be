@@ -381,7 +381,15 @@ class GeneralController extends Controller
     }
 
 
+    public function apiTest(){
+
+        return 'ok';
+
+    }
     public function testy(){
+
+      return allCountries();
+
 
         // $payload = [
         //     "customer_id"=> "65c2adf0cd5ee96c010dbec0",

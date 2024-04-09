@@ -27,6 +27,8 @@ Route::group(['namespace' => 'auth'], function () {
     ///publi apis
     Route::get('landing', [GeneralController::class, 'ladingpageApi']);
     Route::get('country/list', [GeneralController::class, 'country']);
+    /// test apis
+    Route::get('test/list', [GeneralController::class, 'apiTest']);
 });
 
 Route::middleware(['auth:api'])->group(function () {
