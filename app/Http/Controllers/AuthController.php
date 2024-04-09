@@ -57,8 +57,8 @@ class AuthController extends Controller
     //    //PaystackHelpers::getLocation(); 
        try{
 
-        return $location = Location::get(request()->ip());
-        
+        // return $location = Location::get(request()->ip());
+
         $ref_id = $request->ref_id;
         $name = $request->first_name.' '.$request->last_name;
         
@@ -75,22 +75,22 @@ class AuthController extends Controller
         
         $user->referral_code = Str::random(7);
         $user->save();
-        $wallet =  Wallet::create(['user_id'=> $user->id, 'balance' => '0.00']);
+
+        $curLocation == "Nigeria" ? 'Naira' : 'Dollar';
+        $wallet =  Wallet::create(['user_id'=> $user->id, 'balance' => '0.00', 'base_currency' => $curLocation]);
 
         if($ref_id != ''){
             Referral::create(['user_id' => $user->id, 'referee_id' => $ref_id]);
         }
 
         $token = $user->createToken('freebyz_api')->accessToken;
-        SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
+       // SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
        
         $data['user'] = $user;
         $data['wallet'] = $wallet;
         $data['token'] = $token;
 
-        // $wall = Wallet::where('user_id', $user->id)->first();
-        // $wall->base_currency = $curLocation == "Nigeria" ? 'Naira' : 'Dollar';
-        // $wall->save();
+        
 
        
 
