@@ -5,6 +5,7 @@ use App\Helpers\Sendmonny;
 use App\Helpers\SystemActivities;
 use App\Mail\UpgradeUser;
 use App\Models\AccountInformation;
+use App\Models\ActivityLog;
 use App\Models\Banner;
 use App\Models\BannerImpression;
 use App\Models\Campaign;
@@ -948,6 +949,14 @@ if(!function_exists('currentLocation')){
         }
         $location = Location::get($ip);
         return $location->countryName;
+    }
+
+}
+
+if(!function_exists('activityLog')){
+    function activityLog($user, $activity_type, $description, $user_type){ 
+
+        return ActivityLog::create(['user_id' => $user->id, 'activity_type' => $activity_type, 'description' => $description, 'user_type' => $user_type]);
     }
 
 }
