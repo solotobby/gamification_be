@@ -68,7 +68,7 @@ class AuthController extends Controller
             }
 
             $data['user'] = $user;
-            // $data['profile'] = $profile;
+            $data['profile'] = $profile;
             $data['token'] = $token;
            
             return response()->json(['status' => true, 'data' => $data,  'message' => 'Registration successfully'], 201);
@@ -111,10 +111,10 @@ class AuthController extends Controller
 
         SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
 
-        if($location == 'Nigeria'){
-            $phone = '234'.substr($request->phone, 1);
-            generateVirtualAccountOnboarding($user, $phone);
-        }
+        // if($location == 'Nigeria'){
+        //     $phone = '234'.substr($request->phone, 1);
+        //     generateVirtualAccountOnboarding($user, $phone);
+        // }
 
         // // $content = 'Your withdrawal request has been granted and your acount credited successfully. Thank you for choosing Freebyz.com';
         // $subject = 'Welcome to Freebyz';
