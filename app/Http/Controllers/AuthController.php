@@ -81,9 +81,12 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('freebyz_api')->accessToken;
-       
+        SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
+        $location = PaystackHelpers::getLocation(); //get user location dynamically
+
         $data['user'] = $user;
-        $data['profile'] = $wallet;
+        $data['wallet'] = $wallet;
+        $data['location'] = $location;
         $data['token'] = $token;
 
         // $location = PaystackHelpers::getLocation(); //get user location dynamically
@@ -91,9 +94,7 @@ class AuthController extends Controller
         // $wall->base_currency = $location == "Nigeria" ? 'Naira' : 'Dollar';
         // $wall->save();
 
-        // SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
-
-
+       
 
                      
     //    //return $user = $this->createUser($request);
