@@ -54,9 +54,11 @@ class AuthController extends Controller
         ]);
        }
 
-    //    return $location = Location::get(request()->ip()); //PaystackHelpers::getLocation(); 
+    //    //PaystackHelpers::getLocation(); 
        try{
 
+        return $location = Location::get(request()->ip());
+        
         $ref_id = $request->ref_id;
         $name = $request->first_name.' '.$request->last_name;
         
