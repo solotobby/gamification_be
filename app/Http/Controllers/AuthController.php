@@ -57,7 +57,6 @@ class AuthController extends Controller
 
     //    //PaystackHelpers::getLocation(); 
        try{
-        return ActivityLog::create(['user_id' => '33', 'activity_type' => 'account_creation', 'description' => 'cood', 'user_type' => 'regular']);
         // return $location = Location::get(request()->ip());
 
         $ref_id = $request->ref_id;
@@ -74,7 +73,7 @@ class AuthController extends Controller
 
         
 
-       //return  SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
+       return  SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
        
 
         $user->assignRole('regular');
