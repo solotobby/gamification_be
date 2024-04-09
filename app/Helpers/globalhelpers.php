@@ -941,7 +941,7 @@ if(!function_exists('transactionProcessor')){
 if(!function_exists('currentLocation')){
     function currentLocation(){ 
 
-        if(env('APP_ENV') === 'localenv'){
+        if(env('APP_ENV') === 'local'){
             $ip =  '48.188.144.248';//'41.210.11.223';//'48.188.144.248';
         }else{
             $ip = request()->ip();

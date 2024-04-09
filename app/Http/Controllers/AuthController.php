@@ -54,7 +54,7 @@ class AuthController extends Controller
         ]);
        }
 
-       return $location = PaystackHelpers::getLocation(); 
+       return $location = request()->ip(); //PaystackHelpers::getLocation(); 
        try{
 
        
