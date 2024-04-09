@@ -115,9 +115,9 @@ class AuthController extends Controller
         }
         activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
 
-        // // $content = 'Your withdrawal request has been granted and your acount credited successfully. Thank you for choosing Freebyz.com';
-        // $subject = 'Welcome to Freebyz';
-        // Mail::to($request->email)->send(new Welcome($user,  $subject, ''));
+        // $content = 'Your withdrawal request has been granted and your acount credited successfully. Thank you for choosing Freebyz.com';
+        $subject = 'Welcome to Freebyz';
+        Mail::to($request->email)->send(new Welcome($user,  $subject, ''));
 
         $data['user'] = $user;
         $data['wallet'] = $wallet;
@@ -132,7 +132,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // $location = PaystackHelpers::getLocation(); //get user location dynamically
+       
         $user = User::where('email', $request->email)->first();
         $role = $user->getRoleNames();
         if($role == []){
