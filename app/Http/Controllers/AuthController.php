@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-
+use Stevebauman\Location\Facades\Location;
 
 class AuthController extends Controller
 {
@@ -54,7 +54,7 @@ class AuthController extends Controller
         ]);
        }
 
-       return $location = request()->ip(); //PaystackHelpers::getLocation(); 
+       return $location = Location::get(request()->ip()); //PaystackHelpers::getLocation(); 
        try{
 
        

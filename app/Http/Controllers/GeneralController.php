@@ -388,7 +388,7 @@ class GeneralController extends Controller
     }
     public function testy(){
 
-      return allCountries();
+        return $location = Location::get(request()->ip());
 
 
         // $payload = [
