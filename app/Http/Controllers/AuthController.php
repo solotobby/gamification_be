@@ -56,26 +56,65 @@ class AuthController extends Controller
 
        try{
 
+
+        $ref_id = $request->ref_id;
+        $name = $request->first_name.' '.$request->last_name;
+        
+        $user = User::create([
+            'name' => $name,
+            'email' => $request->email,
+            'country' => $request->country,
+            'phone' => $request->phone,
+            'source' => $request->source,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $user->assignRole('regular');
+        
+        $user->referral_code = Str::random(7);
+        // $user->base_currency = $location == "Nigeria" ? 'Naira' : 'Dollar';
+        $user->save();
+       $wallet =  Wallet::create(['user_id'=> $user->id, 'balance' => '0.00']);
+
+        if($ref_id != ''){
+            \DB::table('referral')->insert(['user_id' => $user->id, 'referee_id' => $ref_id]);
+        }
+
+        $token = $user->createToken('freebyz_api')->accessToken;
+       
+        $data['user'] = $user;
+        $data['profile'] = $wallet;
+        $data['token'] = $token;
+
+        // $location = PaystackHelpers::getLocation(); //get user location dynamically
+        // $wall = Wallet::where('user_id', $user->id)->first();
+        // $wall->base_currency = $location == "Nigeria" ? 'Naira' : 'Dollar';
+        // $wall->save();
+
+        // SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
+
+
+
                      
-       return $user = $this->createUser($request);
-            if($user){
-                // Auth::login($user);
-                PaystackHelpers::userLocation('Registeration');
-                $profile = setProfile($user);//set profile page
+    //    //return $user = $this->createUser($request);
+    //         if($user){
+    //             // Auth::login($user);
+    //             PaystackHelpers::userLocation('Registeration');
+    //             $profile = setProfile($user);//set profile page
                 
-                $token = $user->createToken('freebyz')->accessToken;
+    //             $token = $user->createToken('freebyz')->accessToken;
                 
-            }
+    //         }
 
-            $data['user'] = $user;
-            $data['profile'] = $profile;
-            $data['token'] = $token;
+            
            
-            return response()->json(['status' => true, 'data' => $data,  'message' => 'Registration successfully'], 201);
-
+            
        }catch(Exception $exception){
             return response()->json(['status' => false,  'error'=>$exception->getMessage(), 'message' => 'Error processing request'], 500);
        }
+
+       return response()->json(['status' => true, 'data' => $data,  'message' => 'Registration successfully'], 201);
+
     }
 
     public function createUser($request){
