@@ -86,9 +86,9 @@ class AuthController extends Controller
         $data['wallet'] = $wallet;
         $data['token'] = $token;
 
-        $wall = Wallet::where('user_id', $user->id)->first();
-        $wall->base_currency = $curLocation == "Nigeria" ? 'Naira' : 'Dollar';
-        $wall->save();
+        // $wall = Wallet::where('user_id', $user->id)->first();
+        // $wall->base_currency = $curLocation == "Nigeria" ? 'Naira' : 'Dollar';
+        // $wall->save();
 
        
 
