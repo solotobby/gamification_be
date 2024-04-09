@@ -1138,3 +1138,12 @@ if(!function_exists('userNairaUpgrade')){
 }
 
 
+if(!function_exists('allCountries')){
+    function allCountries(){ 
+
+      return json_decode(config('countries')); 
+
+    }
+}
+
+

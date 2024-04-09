@@ -24,8 +24,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login',  [AuthController::class,'login']);
-    
+    ///publi apis
     Route::get('landing', [GeneralController::class, 'ladingpageApi']);
+    Route::get('country/list', [GeneralController::class, 'country']);
 });
 
 Route::middleware(['auth:api'])->group(function () {

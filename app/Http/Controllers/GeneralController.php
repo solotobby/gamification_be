@@ -72,6 +72,10 @@ class GeneralController extends Controller
         return PaymentTransaction::with(['user:id,name'])->inRandomOrder()->limit(10)->where('type', 'cash_withdrawal')->select(['user_id','amount','description', 'created_at'])->get();
     }
 
+    public function country() {
+        return allCountries();
+    }
+
     public function contact()
     {
         Analytics::dailyVisit('LandingPage');
