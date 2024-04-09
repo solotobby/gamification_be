@@ -384,7 +384,7 @@ class GeneralController extends Controller
 
     public function apiTest(){
 
-        return 'ok';
+        return $location = Location::get(request()->ip());
 
     }
     public function testy(){
