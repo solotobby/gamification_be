@@ -76,14 +76,16 @@ class AuthController extends Controller
         $user->referral_code = Str::random(7);
         $user->save();
 
-        $curLocation == "Nigeria" ? 'Naira' : 'Dollar';
-        $wallet =  Wallet::create(['user_id'=> $user->id, 'balance' => '0.00', 'base_currency' => $curLocation]);
+        $currency = $curLocation == "Nigeria" ? 'Naira' : 'Dollar';
+       
+        $wallet =  Wallet::create(['user_id'=> $user->id, 'balance' => '0.00', 'base_currency' => $currency]);
 
         if($ref_id != ''){
             Referral::create(['user_id' => $user->id, 'referee_id' => $ref_id]);
         }
 
         $token = $user->createToken('freebyz_api')->accessToken;
+
        // SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
        
         $data['user'] = $user;
