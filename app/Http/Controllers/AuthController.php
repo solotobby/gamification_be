@@ -81,11 +81,9 @@ class AuthController extends Controller
 
         $token = $user->createToken('freebyz_api')->accessToken;
         SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
-        $location = PaystackHelpers::getLocation(); //get user location dynamically
-
+       
         $data['user'] = $user;
         $data['wallet'] = $wallet;
-        $data['location'] = $location;
         $data['token'] = $token;
 
         $wall = Wallet::where('user_id', $user->id)->first();
