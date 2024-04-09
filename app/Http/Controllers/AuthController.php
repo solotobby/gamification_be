@@ -71,6 +71,9 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+       return  SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
+       
+
         $user->assignRole('regular');
         
         $user->referral_code = Str::random(7);
