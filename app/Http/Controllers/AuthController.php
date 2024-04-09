@@ -30,7 +30,7 @@ use Stevebauman\Location\Facades\Location;
 class AuthController extends Controller
 {
     public function register(Request $request){
-        $curLocation = currentLocation();
+       return  $curLocation = currentLocation();
        if($curLocation == 'Nigeria'){
        
         $request->validate([
