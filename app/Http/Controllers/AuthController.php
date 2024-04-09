@@ -71,11 +71,6 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        
-
-       return  SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
-       
-
         $user->assignRole('regular');
         
         $user->referral_code = Str::random(7);
@@ -91,15 +86,11 @@ class AuthController extends Controller
 
         $token = $user->createToken('freebyz_api')->accessToken;
 
-       // SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
+       SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
        
         $data['user'] = $user;
         $data['wallet'] = $wallet;
         $data['token'] = $token;
-
-        
-
-       
 
                      
     //    //return $user = $this->createUser($request);
