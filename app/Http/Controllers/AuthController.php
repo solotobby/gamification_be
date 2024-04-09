@@ -58,18 +58,18 @@ class AuthController extends Controller
 
                      
         $user = $this->createUser($request);
-            if($user){
-                // Auth::login($user);
-                // PaystackHelpers::userLocation('Registeration');
-                // $profile = setProfile($user);//set profile page
+            // if($user){
+            //     // Auth::login($user);
+            //     // PaystackHelpers::userLocation('Registeration');
+            //     // $profile = setProfile($user);//set profile page
                 
-                $token = $user->createToken('freebyz')->accessToken;
+            //     $token = $user->createToken('freebyz')->accessToken;
                 
-            }
+            // }
 
             $data['user'] = $user;
             // $data['profile'] = $profile;
-            $data['token'] = $token;
+            // $data['token'] = $token;
            
             return response()->json(['status' => true, 'data' => $data,  'message' => 'Registration successfully'], 201);
 
@@ -116,9 +116,9 @@ class AuthController extends Controller
         //     generateVirtualAccountOnboarding($user, $phone);
         // }
 
-        // $content = 'Your withdrawal request has been granted and your acount credited successfully. Thank you for choosing Freebyz.com';
-        $subject = 'Welcome to Freebyz';
-        Mail::to($request->email)->send(new Welcome($user,  $subject, ''));
+        // // $content = 'Your withdrawal request has been granted and your acount credited successfully. Thank you for choosing Freebyz.com';
+        // $subject = 'Welcome to Freebyz';
+        // Mail::to($request->email)->send(new Welcome($user,  $subject, ''));
 
         return $user;
     }
