@@ -104,10 +104,10 @@ class AuthController extends Controller
         }
        
 
-        $location = PaystackHelpers::getLocation(); //get user location dynamically
-        $wall = Wallet::where('user_id', $user->id)->first();
-        $wall->base_currency = $location == "Nigeria" ? 'Naira' : 'Dollar';
-        $wall->save();
+        // $location = PaystackHelpers::getLocation(); //get user location dynamically
+        // $wall = Wallet::where('user_id', $user->id)->first();
+        // $wall->base_currency = $location == "Nigeria" ? 'Naira' : 'Dollar';
+        // $wall->save();
 
         SystemActivities::activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
 
