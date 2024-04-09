@@ -57,7 +57,7 @@ class AuthController extends Controller
        try{
 
                      
-        $user = $this->createUser($request);
+       return $user = $this->createUser($request);
             if($user){
                 // Auth::login($user);
                 PaystackHelpers::userLocation('Registeration');
