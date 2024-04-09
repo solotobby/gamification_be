@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\UserScore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Stevebauman\Location\Facades\Location;
 
 class GeneralController extends Controller
 {
