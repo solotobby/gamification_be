@@ -30,7 +30,7 @@ use Stevebauman\Location\Facades\Location;
 class AuthController extends Controller
 {
     public function register(Request $request){
-       return  $curLocation = currentLocation();
+       $curLocation = currentLocation();
        if($curLocation == 'Nigeria'){
        
         $request->validate([
@@ -54,11 +54,8 @@ class AuthController extends Controller
         ]);
        }
 
-       return $location = Location::get(request()->ip()); //PaystackHelpers::getLocation(); 
+    //    return $location = Location::get(request()->ip()); //PaystackHelpers::getLocation(); 
        try{
-
-       
-
 
         $ref_id = $request->ref_id;
         $name = $request->first_name.' '.$request->last_name;
@@ -91,10 +88,9 @@ class AuthController extends Controller
         $data['location'] = $location;
         $data['token'] = $token;
 
-        // $location = PaystackHelpers::getLocation(); //get user location dynamically
-        // $wall = Wallet::where('user_id', $user->id)->first();
-        // $wall->base_currency = $location == "Nigeria" ? 'Naira' : 'Dollar';
-        // $wall->save();
+        $wall = Wallet::where('user_id', $user->id)->first();
+        $wall->base_currency = $curLocation == "Nigeria" ? 'Naira' : 'Dollar';
+        $wall->save();
 
        
 
