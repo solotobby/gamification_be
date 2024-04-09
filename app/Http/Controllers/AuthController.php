@@ -14,6 +14,7 @@ use App\Jobs\SendMassEmail;
 use App\Mail\GeneralMail;
 use App\Mail\Welcome;
 use App\Models\AccountInformation;
+use App\Models\Referral;
 use App\Providers\RouteServiceProvider;
 
 use App\Models\Wallet;
@@ -53,8 +54,10 @@ class AuthController extends Controller
         ]);
        }
 
-
+       return $location = PaystackHelpers::getLocation(); 
        try{
+
+       
 
 
         $ref_id = $request->ref_id;
@@ -72,12 +75,11 @@ class AuthController extends Controller
         $user->assignRole('regular');
         
         $user->referral_code = Str::random(7);
-        // $user->base_currency = $location == "Nigeria" ? 'Naira' : 'Dollar';
         $user->save();
-       $wallet =  Wallet::create(['user_id'=> $user->id, 'balance' => '0.00']);
+        $wallet =  Wallet::create(['user_id'=> $user->id, 'balance' => '0.00']);
 
         if($ref_id != ''){
-            \DB::table('referral')->insert(['user_id' => $user->id, 'referee_id' => $ref_id]);
+            Referral::create(['user_id' => $user->id, 'referee_id' => $ref_id]);
         }
 
         $token = $user->createToken('freebyz_api')->accessToken;
