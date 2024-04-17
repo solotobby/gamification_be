@@ -370,7 +370,6 @@ class CampaignController extends Controller
 
          $getCampaign = SystemActivities::viewCampaign($job_id);
         
-       
          if($getCampaign->currency == 'USD'){
             if(auth()->user()->USD_verified){
                 $completed = CampaignWorker::where('user_id', auth()->user()->id)->where('campaign_id', $getCampaign->id)->first();

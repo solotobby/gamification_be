@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login',  [AuthController::class,'login']);
+    Route::post('process/otp',  [AuthController::class,'sendEmailOTP']);
+    Route::post('validate/otp',  [AuthController::class,'validateOTP']);
     ///publi apis
     Route::get('landing', [GeneralController::class, 'ladingpageApi']);
     Route::get('country/list', [GeneralController::class, 'country']);
