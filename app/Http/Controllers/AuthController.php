@@ -205,7 +205,7 @@ class AuthController extends Controller
                 $subject = 'Freebyz Email Verirification';
 
                 $content = 'Hi,'.$user->name.' Your Email Verification Code is '.$code;
-                // Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
+                Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
 
             }else{
                 return response()->json(['status' => false, 'message' => 'User cannot be found'], 401);
