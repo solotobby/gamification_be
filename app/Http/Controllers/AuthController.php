@@ -240,9 +240,9 @@ class AuthController extends Controller
                 return response()->json(['status' => false, 'message' => 'Otp is not correct, please request another one'], 401);
             }
 
-            $prof = Profile::where('user_id', $otp->user_id)->first();
-            $prof->email_verified = true;
-            $prof->save();
+            // $prof = Profile::where('user_id', $otp->user_id)->first();
+            // $prof->email_verified = true;
+            // $prof->save();
 
             $user = User::with(['roles'])->where('id', $otp->user_id)->first();
 
