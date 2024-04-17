@@ -16,6 +16,7 @@ use App\Mail\Welcome;
 use App\Models\AccountInformation;
 use App\Models\ActivityLog;
 use App\Models\OTP;
+use App\Models\Profile;
 use App\Models\Referral;
 use App\Providers\RouteServiceProvider;
 
@@ -67,8 +68,8 @@ class AuthController extends Controller
 
             $user = $res['user'];
             $wallet = $res['wallet'];
-            $profile = setProfile($user);
-
+            $profile = $res['profile'];
+        
             $token = $user->createToken('freebyz_api')->accessToken;
            
             $data['user'] = $user;
@@ -109,6 +110,8 @@ class AuthController extends Controller
        
         $wallet =  Wallet::create(['user_id'=> $user->id, 'balance' => '0.00', 'base_currency' => $currency]);
 
+        $profile = setProfile($user);
+
         if($ref_id != ''){
             Referral::create(['user_id' => $user->id, 'referee_id' => $ref_id]);
         }
@@ -138,6 +141,7 @@ class AuthController extends Controller
 
         $data['user'] = $user;
         $data['wallet'] = $wallet;
+        $data['profile'] = $profile;
         return $data;
     }
 
@@ -193,7 +197,7 @@ class AuthController extends Controller
             if($user){
 
                 $startTime = date("Y-m-d H:i:s");
-                $convertedTime = date('Y-m-d H:i:s', strtotime('+5 minutes', strtotime($startTime)));
+                $convertedTime = date('Y-m-d H:i:s', strtotime('+2 minutes', strtotime($startTime)));
 
                 $code = random_int(100000, 999999);
 
@@ -201,7 +205,7 @@ class AuthController extends Controller
                 $subject = 'Freebyz Email Verirification';
 
                 $content = 'Hi,'.$user->name.' Your Email Verification Code is '.$code;
-                Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
+                // Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
 
             }else{
                 return response()->json(['status' => false, 'message' => 'User cannot be found'], 401);
@@ -235,6 +239,10 @@ class AuthController extends Controller
             }else{
                 return response()->json(['status' => false, 'message' => 'Otp is not correct, please request another one'], 401);
             }
+
+            $prof = Profile::where('user_id', $otp->user_id)->first();
+            $prof->email_verified = true;
+            $prof->save();
 
             $user = User::with(['roles'])->where('id', $otp->user_id)->first();
 
