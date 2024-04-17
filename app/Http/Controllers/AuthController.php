@@ -239,11 +239,9 @@ class AuthController extends Controller
             }else{
                 return response()->json(['status' => false, 'message' => 'Otp is not correct, please request another one'], 401);
             }
-
-            // $prof = Profile::where('user_id', $otp->user_id)->first();
-            // $prof->email_verified = true;
-            // $prof->save();
-
+          
+            Profile::updateOrCreate(['user_id' => $otp->user_id, 'email_verified' => true]);
+        
             $user = User::with(['roles'])->where('id', $otp->user_id)->first();
 
             $otp->delete();
