@@ -133,8 +133,6 @@ class AuthController extends Controller
         $content = 'Hi,'.$user->name.' Your Email Verification Code is '.$code;
         Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
 
-
-
         // $content = 'Your withdrawal request has been granted and your acount credited successfully. Thank you for choosing Freebyz.com';
         $subject = 'Welcome to Freebyz';
         Mail::to($request->email)->send(new Welcome($user,  $subject, ''));
@@ -171,7 +169,7 @@ class AuthController extends Controller
                 $data['user'] = User::with(['roles'])->where('email', $request->email)->first();
                 $data['token'] = $user->createToken('freebyz')->accessToken;
                
-                setProfile($user);//set profile page 
+                $data['profile']=setProfile($user);//set profile page 
                
                 activityLog($user, 'login', $user->name .' Logged In', 'regular');
 
