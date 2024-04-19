@@ -62,22 +62,22 @@ class AuthController extends Controller
        try{
         // return $location = Location::get(request()->ip());
 
-       return $res = $this->createUser($request, $curLocation);
+        $res = $this->createUser($request, $curLocation);
 
-        // if($res){
+        if($res){
 
-        //     $user = $res['user'];
-        //     $wallet = $res['wallet'];
-        //     $profile = $res['profile'];
+            $user = $res['user'];
+            $wallet = $res['wallet'];
+            $profile = $res['profile'];
         
-        //     $token = $user->createToken('freebyz_api')->accessToken;
+            $token = $user->createToken('freebyz_api')->accessToken;
            
-        //     $data['user'] = $user;
-        //     $data['profile'] = $profile;
-        //     $data['wallet'] = $wallet;
-        //     $data['token'] = $token;
+            $data['user'] = $user;
+            $data['profile'] = $profile;
+            $data['wallet'] = $wallet;
+            $data['token'] = $token;
     
-        // }
+        }
        
        }catch(Exception $exception){
             return response()->json(['status' => false,  'error'=>$exception->getMessage(), 'message' => 'Error processing request'], 500);
@@ -115,24 +115,26 @@ class AuthController extends Controller
         if($ref_id != ''){
             Referral::create(['user_id' => $user->id, 'referee_id' => $ref_id]);
         }
-        if($curLocation == 'Nigeria'){
-            $phone = '234'.substr($request->phone, 1);
-            generateVirtualAccountOnboarding($user, $phone);
-        }
+
+        // if($curLocation == 'Nigeria'){
+        //     $phone = '234'.substr($request->phone, 1);
+        //     generateVirtualAccountOnboarding($user, $phone);
+        // }
+
         activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
 
         //process email verification code
-        
-        // $startTime = date("Y-m-d H:i:s");
-        // $convertedTime = date('Y-m-d H:i:s', strtotime('+2 minutes', strtotime($startTime)));
 
-        // $code = random_int(100000, 999999);
+        $startTime = date("Y-m-d H:i:s");
+        $convertedTime = date('Y-m-d H:i:s', strtotime('+2 minutes', strtotime($startTime)));
 
-        // OTP::create(['user_id' => $user->id, 'pinId' => $convertedTime, 'phone_number' => '1234567890', 'otp' => $code, 'is_verified' => false]);
-        // $subject = 'Freebyz Email Verirification';
+        $code = random_int(100000, 999999);
 
-        // $content = 'Hi,'.$user->name.' Your Email Verification Code is '.$code;
-        // Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
+        OTP::create(['user_id' => $user->id, 'pinId' => $convertedTime, 'phone_number' => '1234567890', 'otp' => $code, 'is_verified' => false]);
+        $subject = 'Freebyz Email Verirification';
+
+        $content = 'Hi,'.$user->name.' Your Email Verification Code is '.$code;
+        Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
 
         // $content = 'Your withdrawal request has been granted and your acount credited successfully. Thank you for choosing Freebyz.com';
         $subject = 'Welcome to Freebyz';
