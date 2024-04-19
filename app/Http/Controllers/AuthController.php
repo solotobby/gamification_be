@@ -62,22 +62,22 @@ class AuthController extends Controller
        try{
         // return $location = Location::get(request()->ip());
 
-        $res = $this->createUser($request, $curLocation);
+       return $res = $this->createUser($request, $curLocation);
 
-        if($res){
+        // if($res){
 
-            $user = $res['user'];
-            $wallet = $res['wallet'];
-            $profile = $res['profile'];
+        //     $user = $res['user'];
+        //     $wallet = $res['wallet'];
+        //     $profile = $res['profile'];
         
-            $token = $user->createToken('freebyz_api')->accessToken;
+        //     $token = $user->createToken('freebyz_api')->accessToken;
            
-            $data['user'] = $user;
-            $data['profile'] = $profile;
-            $data['wallet'] = $wallet;
-            $data['token'] = $token;
+        //     $data['user'] = $user;
+        //     $data['profile'] = $profile;
+        //     $data['wallet'] = $wallet;
+        //     $data['token'] = $token;
     
-        }
+        // }
        
        }catch(Exception $exception){
             return response()->json(['status' => false,  'error'=>$exception->getMessage(), 'message' => 'Error processing request'], 500);
@@ -168,7 +168,6 @@ class AuthController extends Controller
              if(Hash::check($request->password, $user->password)){
                 $data['user'] = User::with(['roles'])->where('email', $request->email)->first();
                 $data['token'] = $user->createToken('freebyz')->accessToken;
-               
                 $data['profile']=setProfile($user);//set profile page 
                
                 activityLog($user, 'login', $user->name .' Logged In', 'regular');
