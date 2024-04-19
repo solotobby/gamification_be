@@ -122,16 +122,17 @@ class AuthController extends Controller
         activityLog($user, 'account_creation', $user->name .' Registered ', 'regular');
 
         //process email verification code
-        $startTime = date("Y-m-d H:i:s");
-        $convertedTime = date('Y-m-d H:i:s', strtotime('+2 minutes', strtotime($startTime)));
+        
+        // $startTime = date("Y-m-d H:i:s");
+        // $convertedTime = date('Y-m-d H:i:s', strtotime('+2 minutes', strtotime($startTime)));
 
-        $code = random_int(100000, 999999);
+        // $code = random_int(100000, 999999);
 
-        OTP::create(['user_id' => $user->id, 'pinId' => $convertedTime, 'phone_number' => '1234567890', 'otp' => $code, 'is_verified' => false]);
-        $subject = 'Freebyz Email Verirification';
+        // OTP::create(['user_id' => $user->id, 'pinId' => $convertedTime, 'phone_number' => '1234567890', 'otp' => $code, 'is_verified' => false]);
+        // $subject = 'Freebyz Email Verirification';
 
-        $content = 'Hi,'.$user->name.' Your Email Verification Code is '.$code;
-        Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
+        // $content = 'Hi,'.$user->name.' Your Email Verification Code is '.$code;
+        // Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
 
         // $content = 'Your withdrawal request has been granted and your acount credited successfully. Thank you for choosing Freebyz.com';
         $subject = 'Welcome to Freebyz';
