@@ -202,7 +202,7 @@ class AuthController extends Controller
                 $code = random_int(100000, 999999);
 
                 OTP::create(['user_id' => $user->id, 'pinId' => $convertedTime, 'phone_number' => '1234567890', 'otp' => $code, 'is_verified' => false]);
-                $subject = 'Freebyz Email Verirification';
+                $subject = 'Freebyz Email Verification';
 
                 $content = 'Hi,'.$user->name.' Your Email Verification Code is '.$code;
                 Mail::to($user->email)->send(new GeneralMail($user, $content, $subject, ''));
@@ -252,7 +252,60 @@ class AuthController extends Controller
         }
         return response()->json(['status' => true, 'message' => 'Email Verified successfully', 'data' => $user], 200);
 
+    }
 
+    public function sendRessetPasswordLink(Request $request){
+        $request->validate([
+            'email' => 'required|email|max:255',
+        ]);
+
+        try{
+            $validateEmail = User::where('email', $request->email)->select(['id', 'name', 'email'])->first();
+            if($validateEmail){
+                $token = Str::random(64);
+                \DB::table('password_resets')->insert(['email' => $validateEmail->email, 'token' => $token, 'created_at' => now()]);
+                // $subject = 'Freebyz Password Reset Link';
+                // $r_link = url('password/reset/'.$token);    
+                // $content = 'Hi,'.$validateEmail->name.'. Your Password Reset Link is '.$r_link;
+                // Mail::to($validateEmail->email)->send(new GeneralMail($validateEmail, $content, $subject, ''));
+
+            }else{
+                return response()->json(['status' => false, 'message' => 'No account associated with the email'], 401);
+            }
+        }catch(Exception $exception){
+            return response()->json(['status' => false,  'error'=>$exception->getMessage(), 'message' => 'Error processing request'], 500);
+        }
+        return response()->json(['status' => true, 'message' => 'Reset Password Link Sent'], 200);
+
+    }
+
+    public function ressetPassword(Request $request){
+        $request->validate([
+            'token' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        try{
+            $check = \DB::table('password_resets')->where('token', $request->token)->first();
+            if($check){
+                 $user = User::where('email', $check->email)->first();
+                $user->password = Hash::make($request->password);
+                $user->save();
+
+                \DB::table('password_resets')->where('token', $request->token)->delete();
+
+            }else{
+                return response()->json(['status' => false, 'message' => 'Something unexpected happen, contact the developer'], 401);
+            }
+           
+           
+
+
+        }catch(Exception $exception){
+            return response()->json(['status' => false,  'error'=>$exception->getMessage(), 'message' => 'Error processing request'], 500);
+        }
+
+        return response()->json(['status' => true, 'message' => 'Password Reset Successful'], 200);
     }
 
     public function logout(Request $request){
